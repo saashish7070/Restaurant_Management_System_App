@@ -25,7 +25,7 @@ A Flutter-based **Restaurant Management System** that simplifies restaurant oper
 
 ## ⚙️ Setup
 ```bash
-git clone https://github.com/<your-username>/rms.git
+git clone https://github.com/saashish7070/Restaurant_Management_System_App
 cd rms
 flutter pub get
 flutter run
