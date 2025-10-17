@@ -1,16 +1,31 @@
-# rms
+# 🍽️ RMS - Restaurant Management System
 
-A new Flutter project.
+A Flutter-based **Restaurant Management System** that simplifies restaurant operations with features like menu management, order tracking, and authentication. Built using **Flutter**, **Firebase**, and **BLoC/Provider** for clean architecture and responsive UI.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
+- User authentication (Firebase)
+- Menu and order management (CRUD)
+- Real-time data updates
+- Responsive UI design
+- Local storage using Shared Preferences
+- State management with BLoC and Provider
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🧩 Tech Stack
+**Frontend:** Flutter, Dart  
+**Backend:** Firebase, Firestore  
+**State Management:** BLoC, Provider  
+**Storage:** Shared Preferences  
+**Tools:** Android Studio, Git, REST APIs  
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## ⚙️ Setup
+```bash
+git clone https://github.com/<your-username>/rms.git
+cd rms
+flutter pub get
+flutter run
