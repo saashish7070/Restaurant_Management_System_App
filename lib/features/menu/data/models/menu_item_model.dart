@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rms/features/menu/domain/entities/menu_item.dart';
+import '../../domain/entities/menu_item.dart';
 
 part 'menu_item_model.g.dart';
 
@@ -45,26 +45,26 @@ class MenuItemModel {
   Map<String, dynamic> toJson() => _$MenuItemModelToJson(this);
 
   MenuItemEntity toEntity() => MenuItemEntity(
-    id: id,
-    name: name,
-    price: price,
-    available: available,
-    cuisine: cuisine,
-    categories: categories,
-    typeItem: typeItem,
-    imageUrl: imageUrl,
-    ingredient: ingredient,
-  );
+        id: id,
+        name: name,
+        price: price,
+        available: available,
+        cuisine: cuisine,
+        categories: categories,
+        typeItem: typeItem,
+        imageUrl: imageUrl,
+        ingredient: ingredient,
+      );
 
   factory MenuItemModel.fromEntity(MenuItemEntity e) => MenuItemModel(
-    id: e.id,
-    name: e.name,
-    price: e.price,
-    available: e.available,
-    cuisine: e.cuisine,
-    categories: e.categories,
-    typeItem: e.typeItem,
-    imageUrl: e.imageUrl,
-    ingredient: e.ingredient,
-  );
+        id: e.id,
+        name: e.name,
+        price: e.price,
+        available: e.available,
+        cuisine: e.cuisine,
+        categories: e.categories,
+        typeItem: e.typeItem,
+        imageUrl: e.imageUrl,
+        ingredient: e.ingredient,
+      );
 }

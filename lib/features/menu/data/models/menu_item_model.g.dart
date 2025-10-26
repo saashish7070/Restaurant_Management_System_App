@@ -26,13 +26,14 @@ class MenuItemModelAdapter extends TypeAdapter<MenuItemModel> {
       typeItem: fields[6] as bool,
       imageUrl: fields[7] as String,
       ingredient: fields[8] as String,
+      isPendingSync: fields[9] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, MenuItemModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class MenuItemModelAdapter extends TypeAdapter<MenuItemModel> {
       ..writeByte(7)
       ..write(obj.imageUrl)
       ..writeByte(8)
-      ..write(obj.ingredient);
+      ..write(obj.ingredient)
+      ..writeByte(9)
+      ..write(obj.isPendingSync);
   }
 
   @override
@@ -82,6 +85,7 @@ MenuItemModel _$MenuItemModelFromJson(Map<String, dynamic> json) =>
       typeItem: json['typeItem'] as bool,
       imageUrl: json['imageUrl'] as String,
       ingredient: json['ingredient'] as String,
+      isPendingSync: json['isPendingSync'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$MenuItemModelToJson(MenuItemModel instance) =>
@@ -95,4 +99,5 @@ Map<String, dynamic> _$MenuItemModelToJson(MenuItemModel instance) =>
       'typeItem': instance.typeItem,
       'imageUrl': instance.imageUrl,
       'ingredient': instance.ingredient,
+      'isPendingSync': instance.isPendingSync,
     };

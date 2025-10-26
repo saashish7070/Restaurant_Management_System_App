@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:rms/core/router/router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+import 'core/network/firebase_service.dart';
+import 'core/network/hive_service.dart';
+import 'core/router/router.dart';
+import 'features/menu/data/models/menu_item_model.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await FirebaseService.initialize();
+
+  await HiveService.init();
+  Hive.registerAdapter(MenuItemModelAdapter());
+  await Hive.openBox('menuBox');
+
   runApp(const MyApp());
 }
 

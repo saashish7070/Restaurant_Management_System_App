@@ -1,10 +1,10 @@
-import 'package:rms/features/menu/domain/repositories/menu_repository.dart';
+import '../repositories/menu_repository.dart';
 
 class DeleteMenuItem {
-  final MenuRepository repo;
-  DeleteMenuItem(this.repo);
+  final MenuRepository repository;
+  DeleteMenuItem(this.repository);
 
-  Future<void> call(String restaurantId,String id) async{
-    return repo.deleteItem(restaurantId, id);
+  Future<void> call(String id) async {
+    await repository.deleteMenuItem(id);
   }
 }

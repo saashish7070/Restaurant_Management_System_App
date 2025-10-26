@@ -1,11 +1,11 @@
-import '../repositories/menu_repository.dart';
 import '../entities/menu_item.dart';
+import '../repositories/menu_repository.dart';
 
 class AddMenuItem {
-  final MenuRepository repo;
-  AddMenuItem(this.repo);
+  final MenuRepository repository;
+  AddMenuItem(this.repository);
 
-  Future<void> call(String restaurantId, MenuItemEntity item) async {
-    return repo.addItem(restaurantId, item);
+  Future<void> call(MenuItemEntity item) async {
+    await repository.addMenuItem(item);
   }
 }

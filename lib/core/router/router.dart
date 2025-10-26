@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rms/presentation/screens/home.dart';
-import 'package:rms/presentation/screens/login.dart';
-import 'package:rms/presentation/screens/edit_item.dart';
-import 'package:rms/presentation/screens/ordertable.dart';
-import 'package:rms/presentation/widgets/menu/new_item.dart';
+import 'package:rms/features/menu/presentation/screens/edit_item.dart';
+import 'package:rms/features/order/presentation/screens/ordertable.dart';
+import 'package:rms/features/user/presentation/screens/home.dart';
+import 'package:rms/features/user/presentation/screens/login.dart';
+import 'package:rms/shared/widgets/menu/new_item.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -29,7 +28,7 @@ final GoRouter appRouter = GoRouter(
   path: '/order/:tableNumber',
   builder: (context, state) {
     final tableNumber = state.pathParameters['tableNumber'];
-    return OrderTable(tableNumber: "Table $tableNumber"!);
+    return OrderTable(tableNumber: "Table $tableNumber");
   },
 ),
 

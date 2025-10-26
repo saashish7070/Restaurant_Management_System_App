@@ -1,20 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-part 'menu_item.freezed.dart';
-part 'menu_item.g.dart';
+class MenuItemEntity {
+  final String id;
+  final String name;
+  final String price;
+  final bool available;
+  final List<String> cuisine;
+  final List<String> categories;
+  final bool typeItem;
+  final String imageUrl;
+  final String ingredient;
 
-@freezed
-class MenuItemEntity with _$MenuItemEntity {
-  const factory MenuItemEntity({
-    required String id,
-    required String name,
-    required String price,
-    required bool available,
-    required List<String> cuisine,
-    required List<String> categories,
-    required bool typeItem,
-    required String imageUrl,
-    required String ingredient,
-  }) = _MenuItemEntity;
-
-  factory MenuItemEntity.fromJson(Map<String, dynamic> json) => _$MenuItemEntityFromJson(json);
+  MenuItemEntity({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.available,
+    required this.cuisine,
+    required this.categories,
+    required this.typeItem,
+    required this.imageUrl,
+    required this.ingredient,
+  });
 }

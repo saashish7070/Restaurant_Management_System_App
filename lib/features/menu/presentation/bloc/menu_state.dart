@@ -1,8 +1,7 @@
-part of 'menu_cubit.dart';
+import 'package:equatable/equatable.dart';
+import '../../domain/entities/menu_item.dart';
 
 abstract class MenuState extends Equatable {
-  const MenuState();
-
   @override
   List<Object?> get props => [];
 }
@@ -12,25 +11,17 @@ class MenuInitial extends MenuState {}
 class MenuLoading extends MenuState {}
 
 class MenuLoaded extends MenuState {
-  final List<MenuItemEntity> items;
-  const MenuLoaded(this.items);
+  final List<MenuItemEntity> menuItems;
+  MenuLoaded(this.menuItems);
 
   @override
-  List<Object?> get props => [items];
+  List<Object?> get props => [menuItems];
 }
 
 class MenuError extends MenuState {
   final String message;
-  const MenuError(this.message);
+  MenuError(this.message);
 
   @override
   List<Object?> get props => [message];
-}
-
-class MenuSyncing extends MenuState {
-  final List<MenuItemEntity> items;
-  const MenuSyncing(this.items);
-
-  @override
-  List<Object?> get props => [items];
 }

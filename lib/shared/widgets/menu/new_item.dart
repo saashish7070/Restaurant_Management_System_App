@@ -186,9 +186,9 @@ Image: ${imageFile?.path}
   @override
   Widget build(BuildContext context) {
     const black = Color(0xFF2A2A2A);
-    const light = Color(0xFFF7F3EC);
+    // const light = Color(0xFFF7F3EC);
     const bg = Color(0xFFF9FBFD);
-    const green = Color(0xFF4ADE80);
+    // const green = Color(0xFF4ADE80);
     const brandOrange = Color(0xFFF7621B);
 
     return Scaffold(
