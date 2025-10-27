@@ -20,7 +20,7 @@ Future<UserCubit> initUserFeature() async {
 
   final createUser = CreateUser(repo);
   final login = LoginUser(repo);
-  final getLoggedIn = Ge`tLoggedInUser(repo);
+  final getLoggedIn = GetLoggedInUser(repo);
   final logout = LogoutUser(repo);
 
   return UserCubit(
