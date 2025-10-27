@@ -1,8 +1,8 @@
-import 'package:rms/features/user/domain/entities/user.dart';
-
+import '../entities/user_entity.dart';
 
 abstract class UserRepository {
-  Future<UserEntity> register(UserEntity user);
-  Future<UserEntity?> getUserByEmail(String email);
-  Future<UserEntity?> getCachedUser();
+  Future<void> createUser(UserEntity user);
+  Future<UserEntity?> loginUser(String email, String password);
+  Future<UserEntity?> getLoggedInUser();
+  Future<void> logoutUser();
 }

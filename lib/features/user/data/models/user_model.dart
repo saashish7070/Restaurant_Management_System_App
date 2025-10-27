@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:rms/features/user/domain/entities/user.dart';
+import '../../domain/entities/user_entity.dart';
 
 part 'user_model.g.dart';
 
@@ -38,7 +38,7 @@ class UserModel extends UserEntity {
         id: json['id'] ?? '',
         name: json['name'] ?? '',
         email: json['email'] ?? '',
-        password: json['password'] ?? '',
+        password: json['password'] ?? '', 
         restaurantId: json['restaurantId'] ?? '',
       );
 

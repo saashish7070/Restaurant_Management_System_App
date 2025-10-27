@@ -1,18 +1,20 @@
-import 'package:rms/features/user/data/datasources/user/user_local_datasource.dart';
-import 'package:rms/features/user/data/datasources/user/user_remote_datasource.dart';
-import 'package:rms/features/user/data/models/user_model.dart';
-import 'package:rms/features/user/domain/entities/user.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/user_repository.dart';
-
+import '../datasources/user_local_data_source.dart';
+import '../datasources/user_remote_data_source.dart';
+import '../models/user_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remote;
   final UserLocalDataSource local;
 
-  UserRepositoryImpl({required this.remote, required this.local});
+  UserRepositoryImpl({
+    required this.remote,
+    required this.local,
+  });
 
   @override
-  Future<UserEntity> register(UserEntity user) async {
+  Future<void> createUser(UserEntity user) async {
     final model = UserModel(
       id: user.id,
       name: user.name,
@@ -20,18 +22,27 @@ class UserRepositoryImpl implements UserRepository {
       password: user.password,
       restaurantId: user.restaurantId,
     );
-    final createdUser = await remote.createUser(model);
-    await local.cacheUser(createdUser);
-    return createdUser;
+    await remote.createUser(model);
+    await local.cacheUser(model);
   }
 
   @override
-  Future<UserEntity?> getUserByEmail(String email) async {
-    final user = await remote.getUserByEmail(email);
-    if (user != null) await local.cacheUser(user);
-    return user;
+  Future<UserEntity?> loginUser(String email, String password) async {
+    final userModel = await remote.loginUser(email, password);
+    if (userModel != null) {
+      await local.cacheUser(userModel);
+      return userModel;
+    }
+    return null;
   }
 
   @override
-  Future<UserEntity?> getCachedUser() => local.getCachedUser();
+  Future<UserEntity?> getLoggedInUser() async {
+    return await local.getCachedUser();
+  }
+
+  @override
+  Future<void> logoutUser() async {
+    await local.clearUser();
+  }
 }

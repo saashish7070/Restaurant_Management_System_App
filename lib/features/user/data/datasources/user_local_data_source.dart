@@ -1,29 +1,28 @@
 import 'package:hive/hive.dart';
-import 'package:rms/features/user/data/models/user_model.dart';
-
+import '../models/user_model.dart';
 
 abstract class UserLocalDataSource {
   Future<void> cacheUser(UserModel user);
   Future<UserModel?> getCachedUser();
-  Future<void> clearCachedUser();
+  Future<void> clearUser();
 }
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
-  final Box box;
+  final Box<UserModel> box;
   UserLocalDataSourceImpl(this.box);
 
   @override
   Future<void> cacheUser(UserModel user) async {
-    await box.put('cached_user', user.toJson());
+    await box.put('user', user);
   }
 
   @override
   Future<UserModel?> getCachedUser() async {
-    final data = box.get('cached_user');
-    if (data == null) return null;
-    return UserModel.fromJson(Map<String, dynamic>.from(data));
+    return box.get('user');
   }
 
   @override
-  Future<void> clearCachedUser() async => await box.delete('cached_user');
+  Future<void> clearUser() async {
+    await box.delete('user');
+  }
 }
