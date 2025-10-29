@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../domain/entities/user_entity.dart';
 import '../bloc/user_cubit.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
-
-  @override
-  void initState() {
-    super.initState();
-    // Attempt to auto-load any cached logged-in user
-    context.read<UserCubit>().loadLoggedInUser();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +24,18 @@ class _LoginPageState extends State<LoginPage> {
     final Color fillColor = const Color(0xFFFEFAF2);
 
     return BlocConsumer<UserCubit, UserState>(
-      listener: (context, state) async {
+      listener: (context, state) {
         if (state is UserError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
         }
 
-        if (state is UserLoggedIn) {
-          context.go('/home');
+        if (state is UserRegistered) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Registration successful! Please login.")),
+          );
+          context.go('/login');
         }
       },
       builder: (context, state) {
@@ -53,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () => context.pop(),
             ),
             title: const Text(
-              "Login",
+              "Register",
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -66,19 +64,46 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Welcome Back",
+                    "Create Your Account",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 40),
+                  const Text("Full Name", style: TextStyle(fontSize: 14)),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _nameController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "Please enter your name";
+                      }
+                      return null;
+                    },
+                    cursorColor: focusColor,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: fillColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 1.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            BorderSide(color: focusColor, width: 2.0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   const Text("Email Address", style: TextStyle(fontSize: 14)),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _emailController,
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.trim().isEmpty) {
                         return "Please enter email";
                       }
                       if (!value.contains('@')) {
@@ -109,10 +134,10 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.trim().isEmpty) {
                         return "Please enter password";
                       }
-                      if (value.length < 6) {
+                      if (value.trim().length < 6) {
                         return "Password must be at least 6 characters";
                       }
                       return null;
@@ -153,12 +178,21 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: isLoading
                           ? null
-                          : () {
+                          : () async {
                               if (_formKey.currentState!.validate()) {
+                                final name = _nameController.text.trim();
                                 final email = _emailController.text.trim();
-                                final password =
-                                    _passwordController.text.trim();
-                                context.read<UserCubit>().login(email, password);
+                                final password = _passwordController.text.trim();
+
+                                final user = UserEntity(
+                                  id: '', // Firestore will assign
+                                  name: name,
+                                  email: email,
+                                  password: password,
+                                  restaurantId: null,
+                                );
+
+                                await context.read<UserCubit>().register(user);
                               }
                             },
                       style: ElevatedButton.styleFrom(
@@ -172,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.white,
                             )
                           : const Text(
-                              "Login",
+                              "Register",
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
@@ -186,13 +220,13 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Don't have an account?",
+                        "Already have an account?",
                         style: TextStyle(fontSize: 14),
                       ),
                       TextButton(
-                        onPressed: () => context.go('/signup'),
+                        onPressed: () => context.go('/login'),
                         child: const Text(
-                          "Sign Up",
+                          "Login",
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,

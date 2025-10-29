@@ -3,8 +3,9 @@ import '../models/user_model.dart';
 
 abstract class UserLocalDataSource {
   Future<void> cacheUser(UserModel user);
-  Future<UserModel?> getCachedUser();
+  Future<UserModel?> getUser(String id);
   Future<void> clearUser();
+  Future<UserModel?> getCachedUser();
 }
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
@@ -13,16 +14,21 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> cacheUser(UserModel user) async {
-    await box.put('user', user);
+    await box.put('logged_in_user', user); // store under single key
   }
 
   @override
-  Future<UserModel?> getCachedUser() async {
-    return box.get('user');
+  Future<UserModel?> getUser(String id) async {
+    return box.get(id);
   }
 
   @override
   Future<void> clearUser() async {
-    await box.delete('user');
+    await box.delete('logged_in_user');
+  }
+
+  @override
+  Future<UserModel?> getCachedUser() async {
+    return box.get('logged_in_user');
   }
 }

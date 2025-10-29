@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (GoRouter.of(context).canPop()) {
             context.pop();
           } else {
-            context.go('/');
+            context.go('/home');
           }
         },
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),

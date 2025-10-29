@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms/features/menu/presentation/bloc/menu_cubit.dart';
 
 class CategorySelector extends StatefulWidget {
   const CategorySelector({super.key});
@@ -9,12 +11,14 @@ class CategorySelector extends StatefulWidget {
 
 class _CategorySelectorState extends State<CategorySelector> {
   final List<String> categories = [
-    "Burgers",
+    "All",
+    "Momo",
+    "Burger",
     "Pizza",
     "Drinks",
     "Desserts",
-    "Salads",
-    "Snacks",
+    "Salad",
+    "Snack",
   ];
 
   int selectedIndex = 0; 
@@ -35,11 +39,13 @@ class _CategorySelectorState extends State<CategorySelector> {
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedIndex = index; // Update selected category
+                selectedIndex = index;
               });
-
-              // Later: trigger Bloc event for filtering menu
-              // context.read<MenuBloc>().add(FilterByCategory(categories[index]));
+              if (index == 0) {
+                context.read<MenuCubit>().setCategory(null); // All categories
+              } else {
+                context.read<MenuCubit>().setCategory(categories[index]);
+              }
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

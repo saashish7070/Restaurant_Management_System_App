@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rms/features/menu/presentation/bloc/menu_cubit.dart';
 
 class SearchDish extends StatelessWidget {
   const SearchDish({
@@ -38,10 +40,13 @@ class SearchDish extends StatelessWidget {
                 icon: const Icon(Icons.clear, color: Colors.grey),
                 onPressed: () {
                   searchController.clear();
+                  context.read<MenuCubit>().setSearchQuery('');
                 },
               ),
             ),
-            onChanged: (value) {},
+            onChanged: (value) {
+              context.read<MenuCubit>().setSearchQuery(value);
+            },
           ),
         ),
         const SizedBox(width: 12),

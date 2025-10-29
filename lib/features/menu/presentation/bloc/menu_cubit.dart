@@ -19,11 +19,40 @@ class MenuCubit extends Cubit<MenuState> {
     required this.updateMenuItemUseCase,
   }) : super(MenuInitial());
 
+  List<MenuItemEntity> _allItems = [];
+  String _searchQuery = '';
+  String? _selectedCategory;
+
+  void setSearchQuery(String query) {
+    _searchQuery = query.trim();
+    _applyFilters();
+  }
+
+  void setCategory(String? category) {
+    _selectedCategory = category;
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    Iterable<MenuItemEntity> items = _allItems;
+    if (_selectedCategory != null && _selectedCategory!.isNotEmpty) {
+      items = items.where((e) => e.categories.contains(_selectedCategory));
+    }
+    if (_searchQuery.isNotEmpty) {
+      final q = _searchQuery.toLowerCase();
+      items = items.where((e) =>
+          e.name.toLowerCase().contains(q) ||
+          e.ingredient.toLowerCase().contains(q));
+    }
+    emit(MenuLoaded(items.toList()));
+  }
+
   Future<void> fetchMenuItems() async {
     emit(MenuLoading());
     try {
       final items = await getMenuItemsUseCase();
-      emit(MenuLoaded(items));
+      _allItems = items;
+      _applyFilters();
     } catch (e) {
       emit(MenuError(e.toString()));
     }
@@ -32,7 +61,8 @@ class MenuCubit extends Cubit<MenuState> {
   Future<void> addMenuItem(MenuItemEntity item) async {
     try {
       await addMenuItemUseCase(item);
-      await fetchMenuItems();
+      _allItems = List<MenuItemEntity>.from(_allItems)..add(item);
+      _applyFilters();
     } catch (e) {
       emit(MenuError(e.toString()));
     }
@@ -41,7 +71,8 @@ class MenuCubit extends Cubit<MenuState> {
   Future<void> updateMenuItem(MenuItemEntity item) async {
     try {
       await updateMenuItemUseCase(item);
-      await fetchMenuItems();
+      _allItems = _allItems.map((m) => m.id == item.id ? item : m).toList();
+      _applyFilters();
     } catch (e) {
       emit(MenuError(e.toString()));
     }
@@ -50,7 +81,8 @@ class MenuCubit extends Cubit<MenuState> {
   Future<void> deleteMenuItem(String id) async {
     try {
       await deleteMenuItemUseCase(id);
-      await fetchMenuItems();
+      _allItems = _allItems.where((m) => m.id != id).toList();
+      _applyFilters();
     } catch (e) {
       emit(MenuError(e.toString()));
     }

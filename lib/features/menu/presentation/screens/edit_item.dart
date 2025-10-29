@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms/shared/widgets/appbar.dart';
-import 'package:rms/shared/widgets/menu/items_list.dart';
+import 'package:rms/shared/widgets/menu/item_list.dart';
 import 'package:rms/shared/widgets/menu/search_dish.dart';
 import 'package:rms/shared/widgets/menu/select_category.dart';
 
@@ -24,7 +24,7 @@ class EditItemScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const CategorySelector(),
-            const ItemsList(editEnable: true,action: "Action"),
+            const ItemList(editEnable: true),
           ],
         ),
       ),

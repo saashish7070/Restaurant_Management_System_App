@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OrderSummaryBottomSheet extends StatelessWidget {
   final List<Map<String, dynamic>> selectedItems;
@@ -13,6 +14,10 @@ class OrderSummaryBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color brandOrange = Color(0xFFF7621B);
+    final int totalQty = selectedItems.fold<int>(0, (sum, e) => sum + (e['quantity'] as int));
+    final double? totalPrice = selectedItems.every((e) => e.containsKey('price'))
+        ? selectedItems.fold<double>(0, (sum, e) => sum + ((e['price'] as num).toDouble() * (e['quantity'] as int)))
+        : null;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -66,6 +71,16 @@ class OrderSummaryBottomSheet extends StatelessWidget {
             },
           ),
 
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Items: $totalQty', style: const TextStyle(fontWeight: FontWeight.w600)),
+              if (totalPrice != null)
+                Text('Total: Rs. ${totalPrice.toStringAsFixed(2)}',
+                    style: const TextStyle(fontWeight: FontWeight.w700)),
+            ],
+          ),
           const SizedBox(height: 20),
 
           // Confirm Order button
@@ -80,7 +95,7 @@ class OrderSummaryBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               onPressed: () {
-                Navigator.pop(context); // close bottom sheet
+                context.go('/home'); // close bottom sheet
                 onConfirm(); // callback for order placement
               },
               child: const Text(

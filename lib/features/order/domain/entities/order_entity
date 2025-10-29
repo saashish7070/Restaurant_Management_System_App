@@ -1,0 +1,53 @@
+class OrderItem {
+  final String id;
+  final String menuItemId;
+  final String name;
+  final int quantity;
+  final double price;
+  final String? note; 
+
+  OrderItem({
+    required this.id,
+    required this.menuItemId,
+    required this.name,
+    required this.quantity,
+    required this.price,
+    this.note,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'menuItemId': menuItemId,
+        'name': name,
+        'quantity': quantity,
+        'price': price,
+        'note': note,
+      };
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
+        id: json['id'],
+        menuItemId: json['menuItemId'],
+        name: json['name'],
+        quantity: json['quantity'],
+        price: (json['price'] as num).toDouble(),
+        note: json['note'],
+      );
+
+  OrderItem copyWith({
+    String? id,
+    String? menuItemId,
+    String? name,
+    int? quantity,
+    double? price,
+    String? note,
+  }) {
+    return OrderItem(
+      id: id ?? this.id,
+      menuItemId: menuItemId ?? this.menuItemId,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+      note: note ?? this.note,
+    );
+  }
+}

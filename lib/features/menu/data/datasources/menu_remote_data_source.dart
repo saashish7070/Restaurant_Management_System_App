@@ -20,7 +20,15 @@ class MenuRemoteDataSourceImpl implements MenuRemoteDataSource {
   @override
   Future<List<MenuItemModel>> getMenuItems() async {
     final snapshot = await firestore.collection('menu').get();
-    return snapshot.docs.map((doc) => MenuItemModel.fromJson(doc.data())).toList();
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      // Ensure the Firestore document id is used if not stored in the document
+      final withId = {
+        ...data,
+        'id': data['id'] ?? doc.id,
+      };
+      return MenuItemModel.fromJson(withId);
+    }).toList();
   }
 
   @override

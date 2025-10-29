@@ -22,8 +22,8 @@ class UserRepositoryImpl implements UserRepository {
       password: user.password,
       restaurantId: user.restaurantId,
     );
-    await remote.createUser(model);
-    await local.cacheUser(model);
+    final createdUser = await remote.createUser(model);
+    await local.cacheUser(createdUser);
   }
 
   @override

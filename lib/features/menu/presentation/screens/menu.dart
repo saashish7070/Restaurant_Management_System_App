@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rms/shared/widgets/appbar.dart';
-import 'package:rms/shared/widgets/menu/items_list.dart';
+import 'package:rms/shared/widgets/menu/item_list.dart';
 import 'package:rms/shared/widgets/menu/search_dish.dart';
 import 'package:rms/shared/widgets/menu/select_category.dart';
 
@@ -35,7 +35,7 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
             const SizedBox(height: 20),
             const CategorySelector(),
-            ItemsList(editEnable: false,action: "Available"),
+            const ItemList(editEnable: false),
           ],
         ),
       ),
@@ -47,10 +47,7 @@ class _MenuScreenState extends State<MenuScreen> {
           height: 70,
           child: FloatingActionButton(
             onPressed: () {
-              context.go(
-                '/editItem',
-                extra: {'editEnable': true},
-              );
+              context.go('/editItem');
             },
             backgroundColor: brandOrange,
             elevation: 12,

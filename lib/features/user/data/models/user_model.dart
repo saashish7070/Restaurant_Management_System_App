@@ -18,14 +18,14 @@ class UserModel extends UserEntity {
   final String password;
 
   @HiveField(4)
-  final String restaurantId;
+  final String? restaurantId;
 
-  const UserModel({
+  UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.password,
-    required this.restaurantId,
+    this.restaurantId,
   }) : super(
           id: id,
           name: name,
@@ -38,15 +38,34 @@ class UserModel extends UserEntity {
         id: json['id'] ?? '',
         name: json['name'] ?? '',
         email: json['email'] ?? '',
-        password: json['password'] ?? '', 
-        restaurantId: json['restaurantId'] ?? '',
+        password: json['password'] ?? '',
+        restaurantId: json['restaurantId'],
       );
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'email': email,
-        'password': password,
-        'restaurantId': restaurantId,
-      };
+  Map<String, dynamic> toJson() {
+    final data = {
+      'id': id,
+      'name': name,
+      'email': email,
+      'password': password,
+    };
+    if (restaurantId != null) data['restaurantId'] = restaurantId!;
+    return data;
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? password,
+    String? restaurantId,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      restaurantId: restaurantId ?? this.restaurantId,
+    );
+  }
 }

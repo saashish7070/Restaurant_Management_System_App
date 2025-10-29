@@ -3,13 +3,13 @@ class UserEntity {
   final String name;
   final String email;
   final String password;
-  final String restaurantId;
+  final String? restaurantId;
 
   const UserEntity({
     required this.id,
     required this.name,
     required this.email,
     required this.password,
-    required this.restaurantId,
+    this.restaurantId,
   });
 }
